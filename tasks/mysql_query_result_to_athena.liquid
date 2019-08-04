@@ -1,0 +1,25 @@
+in:
+  type:                mysql
+  host:                ${mysql.example.host}
+  user:                ${mysql.example.user}
+  password:            ${mysql.example.password}
+  database:            ${mysql.example.database}
+  query:               ${query}
+
+  fetch_rows:          10000
+  socket_timeout:      36000
+  options:             {useLegacyDatetimeCode: false, serverTimezone: Asia/Tokyo}
+  default_timezone:    Asia/Tokyo
+
+out:
+  type:                parquet
+  path_prefix:         s3a://${aws.athena_s3_bucket}/mysql/${output_table}/${output_table}
+  block_size:          1073741824
+  compression_codec:   SNAPPY
+  overwrite:           true
+  default_timezone:    JST
+  default_timestamp_format: "%Y-%m-%d %H:%M:%S.%3N"
+  extra_configurations:
+    fs.s3a.access.key: ${aws.access_key}
+    fs.s3a.secret.key: ${aws.secret_key}
+

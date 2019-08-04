@@ -1,0 +1,31 @@
+# environment variables are recorded in docker-compose.yml -> config.template.yml
+# https://github.com/embulk/embulk-input-jdbc/tree/master/embulk-input-mysql
+in:
+  type:                mysql
+  host:                ${mysql.example.host}
+  user:                ${mysql.example.user}
+  password:            ${mysql.example.password}
+  database:            ${mysql.example.database}
+  table:               ${table}
+
+  fetch_rows:          10000
+  incremental:         false
+  incremental_columns: []
+  last_record:         []
+  socket_timeout:      36000
+  options:             {useLegacyDatetimeCode: false, serverTimezone: Asia/Tokyo}
+  default_timezone:    Asia/Tokyo
+
+# https://github.com/choplin/embulk-output-parquet
+out:
+  type:                parquet
+  path_prefix:         s3a://${aws.athena_s3_bucket}/mysql/${table}/${table}
+  block_size:          1073741824
+  compression_codec:   SNAPPY
+  overwrite:           true
+  default_timezone:    JST
+  default_timestamp_format: "%Y-%m-%d %H:%M:%S.%3N"
+  extra_configurations:
+    fs.s3a.access.key: ${aws.access_key}
+    fs.s3a.secret.key: ${aws.secret_key}
+

@@ -1,0 +1,54 @@
+version: "3"
+services:
+  digdag:
+    build: .
+    container_name: digdag
+    command: server
+    volumes:
+      - ./tasks:/var/lib/digdag/tasks
+      - ./scripts:/var/lib/digdag/scripts
+      - ./load_mysql_users_table_to_athena.dig:/var/lib/digdag/load_mysql_users_table_to_athena.dig
+      - ./load_mysql_query_result_to_athena.dig:/var/lib/digdag/load_mysql_query_result_to_athena.dig
+      - ./load_s3_json_to_athena.dig:/var/lib/digdag/load_s3_json_to_athena.dig
+    working_dir: /var/lib/digdag
+    environment:
+      ENVIRONMENT: develop
+      MYSQL_USER: test
+      MYSQL_HOST: mysql
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: example
+      AWS_ACCESS_KEY:
+      AWS_SECRET_KEY:
+      AWS_ATHENA_S3_BUCKET:
+      ATHENA_OUTPUT_LOCATION: s3://
+      AWS_S3_EXAMPLE_JSON_BUCKET: 
+      AWS_S3_EXAMPLE_JSON_PATH: 
+    depends_on:
+      - postgresql
+      - mysql
+    ports:
+      - "3000:65432"
+
+  postgresql:
+    image: postgres:12
+    container_name: digdagdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysqld
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: example
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "password"
+    volumes:
+      - ./docker/fixtures/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+

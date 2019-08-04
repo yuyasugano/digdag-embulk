@@ -1,0 +1,9 @@
+timezone: Asia/Tokyo
+
+# define variables
+_export:
+  table: users
+
++load-mysql-users-table-to-athena:
+  embulk>: tasks/mysql_to_athena.liquid
+

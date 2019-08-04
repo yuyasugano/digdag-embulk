@@ -1,0 +1,29 @@
+in:
+  type: s3
+  bucket: ${aws.s3_example_json_bucket}
+  endpoint: s3-ap-northeast-1.amazonaws.com
+  path_prefix: ${aws.s3_example_json_path}
+  path_match_pattern: \.json$
+  auth_method: basic
+  access_key_id: ${aws.access_key}
+  secret_access_key: ${aws.secret_key}
+  parser:
+    type: jsonpath
+    root: $.users
+    stop_on_invalid_record: false
+    schema:
+      - {name: user_id, type: long}
+      - {name: name, type: string}
+      - {name: mail, type: string}
+out:
+  type:                parquet
+  path_prefix:         s3a://${aws.athena_s3_bucket}/raw_logs/${output_table}/${output_table}
+  block_size:          1073741824
+  compression_codec:   SNAPPY
+  overwrite:           true
+  default_timezone:    JST
+  default_timestamp_format: "%Y-%m-%d %H:%M:%S.%3N"
+  extra_configurations:
+    fs.s3a.access.key: ${aws.access_key}
+    fs.s3a.secret.key: ${aws.secret_key}
+

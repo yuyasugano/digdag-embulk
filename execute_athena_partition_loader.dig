@@ -1,0 +1,11 @@
+timezone: Asia/Tokyo
+
+# Run MSCK REPAIR command to load the partition automatically
+_export:
+  database: ${aws.athena_database}
+  # table: ${table}
+  table: apache_logs
+
++add-partition:
+  py>: scripts.load_athena_partition.run
+

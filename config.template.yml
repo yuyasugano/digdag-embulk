@@ -1,0 +1,15 @@
+mysql:
+  example:
+    host:     ${MYSQL_HOST}
+    user:     ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    database: ${MYSQL_DATABASE}
+aws:
+  access_key: ${AWS_ACCESS_KEY}
+  secret_key: ${AWS_SECRET_KEY}
+  athena_s3_bucket: ${AWS_ATHENA_S3_BUCKET}
+  athena_database: ${AWS_ATHENA_DATABASE}
+  s3_example_json_bucket: ${AWS_S3_EXAMPLE_JSON_BUCKET}
+  s3_example_json_path: ${AWS_S3_EXAMPLE_JSON_PATH}
+env: ${ENVIRONMENT}
+

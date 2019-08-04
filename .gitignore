@@ -1,0 +1,16 @@
+/.digdag-wrapper
+.digdag
+.idea
+.bash_history
+.python-version
+.DS_Store
+._model
+
+*.pyc
+*.tar.gz
+
+docker-compose.yml
+config.yml
+./docker/docker-compose.yml
+./docker/config.yml
+

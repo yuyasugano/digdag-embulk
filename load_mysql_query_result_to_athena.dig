@@ -1,0 +1,14 @@
+timezone: Asia/Tokyo
+
+# define variables
+_export:
+  output_table: joined_users
+  query:
+    SELECT u.id, u.name, u.email, u.created_at, u.updated_at, ua.gender, ua.location
+    FROM users AS u
+    JOIN user_attributes AS ua
+    ON u.id = ua.user_id
+
++load-mysql-query-result-to-athena:
+  embulk>: tasks/mysql_query_result_to_athena.liquid
+

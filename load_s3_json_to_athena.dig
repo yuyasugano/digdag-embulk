@@ -1,0 +1,10 @@
+timezone: Asia/Tokyo
+
+# define variables
+_export:
+  output_tables: json_users
+
+# transform json file into parquet format to specific path
++load-s3-json-to-athena:
+  embulk>: tasks/load_s3_json_to_athena.liquid
+
