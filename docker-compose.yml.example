@@ -3,7 +3,7 @@ services:
   digdag:
     build: .
     container_name: digdag
-    command: server
+    command: scheduler
     volumes:
       - ./tasks:/var/lib/digdag/tasks
       - ./scripts:/var/lib/digdag/scripts
@@ -24,18 +24,9 @@ services:
       AWS_S3_EXAMPLE_JSON_BUCKET: 
       AWS_S3_EXAMPLE_JSON_PATH: 
     depends_on:
-      - postgresql
       - mysql
     ports:
-      - "3000:65432"
-
-  postgresql:
-    image: postgres:12
-    container_name: digdagdb
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
+      - "65432:65432"
 
   mysql:
     image: mysql:5.7
