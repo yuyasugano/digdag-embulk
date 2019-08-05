@@ -1,6 +1,3 @@
-AIジョブカレ分析基盤構築・インフラ基礎講座 <br>
-https://www.aijobcolle.com/infrastructure
-
 ### References
 - [treasure-data/digdag](https://github.com/treasure-data/digdag) 
 - [docs.digdag.io](https://docs.digdag.io/)
