@@ -4,6 +4,7 @@ ENV DIGDAG_VERSION=0.9.38
 ENV EMBULK_VERSION=0.9.16
 ENV AWSCLI_VERSION=1.16.139
 
+USER root
 WORKDIR /var/lib/digdag
 COPY Gemfile Gemfile.lock ./
 
@@ -20,7 +21,7 @@ RUN apk add --no-cache curl && \
     apk --no-cache update && \
     apk --no-cache add ruby-dev ruby-bundler ruby-json && \
     bundle install && \
-    apk --no-cache add ca-certificates curl groff less gettext && \
+    apk --no-cache add ca-certificates curl groff less gettext mysql-client&& \
     apk --no-cache add bash jq && \
     apk --no-cache add python3 && \
     if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi && \
@@ -33,7 +34,6 @@ RUN apk add --no-cache curl && \
 ADD requirements.txt ./
 RUN pip3 install -r ./requirements.txt
 
-USER digdag
 WORKDIR /var/lib/digdag
 
 RUN embulk gem install embulk-input-mysql:0.9.3     \
@@ -51,17 +51,15 @@ RUN embulk gem install embulk-input-mysql:0.9.3     \
                        embulk-parser-json:0.0.7
 
 COPY fixtures/mysql /docker-entrypoint-initdb.d/
-ADD scripts scripts
-ADD tasks tasks
-ADD docker-entrypoint.sh ./
-ADD config.template.yml ./
-ADD allow.properties ./
-ADD *.dig ./
+COPY scripts scripts
+COPY tasks tasks
+COPY docker-entrypoint.sh ./
+COPY config.template.yml ./
+COPY allow.properties ./
+COPY guess.yml ./
+COPY *.csv ./
+COPY *.dig ./
 
-USER root
 RUN ["chmod", "+x", "/var/lib/digdag/docker-entrypoint.sh"]
-RUN chown -R digdag.digdag /var/lib/digdag
-
-USER digdag
 ENTRYPOINT ["/var/lib/digdag/docker-entrypoint.sh"]
 

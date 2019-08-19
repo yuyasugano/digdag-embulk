@@ -5,5 +5,5 @@ _export:
   table: users
 
 +load-mysql-users-table-to-athena:
-  embulk>: tasks/mysql_to_athena.liquid
+  embulk>: tasks/mysql_to_athena.yml.liquid
 

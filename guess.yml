@@ -1,0 +1,11 @@
+in:
+  type: file
+  path_prefix: "./iris.csv"
+out:
+  type: mysql
+  host: 'mysqld.digdag-embulk_default'
+  user: 'root'
+  password: 'root'
+  database: 'example'
+  table: iris
+  mode: insert
